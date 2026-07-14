@@ -1,57 +1,91 @@
 # MagicMirror house setup
 
-Step-by-step Pi setup, a **modules list** for easy installs, and saved **config + CSS** per house.
+Simple step-by-step to set up MagicMirror on a Raspberry Pi. House `config.js` and `custom.css` files live under `houses/`. Module install links are in [MODULES.md](MODULES.md).
 
-## Houses
-
-| Folder | What it is |
-|--------|------------|
-| [`houses/Tushar-bhai-Magic-Mirror-Config/`](houses/Tushar-bhai-Magic-Mirror-Config/) | **Tushar bhai** — `config.js` + `custom.css` |
-| [`houses/Example/`](houses/Example/) | Template — copy for a new house |
-
-Add a new house:
-
-```bash
-cp -r houses/Example "houses/Someone-Name-Magic-Mirror-Config"
-# edit that folder’s config.js (lat / lon / timezone) and custom.css
-```
+Official MagicMirror install docs: https://docs.magicmirror.builders/getting-started/installation.html
 
 ---
 
 ## Step 1 — Install MagicMirror
 
-On the Pi ([docs](https://docs.magicmirror.builders)):
+### 1. Download and install a required Node.js version
+
+See the official documentation:
+
+- [Linux based distributions](https://nodejs.org/en/download)
+- [Others](https://nodejs.org/en/download)
+
+On Raspberry Pi OS / Debian, a common approach:
 
 ```bash
-curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs git
-
-cd ~
-git clone https://github.com/MagicMirrorOrg/MagicMirror.git
-cd ~/MagicMirror
-npm install
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+npm -v
 ```
 
-Quick test:
+(Use a current LTS major version that MagicMirror supports — check the [installation docs](https://docs.magicmirror.builders/getting-started/installation.html) if unsure.)
+
+### 2. Make sure `git` is installed
+
+```bash
+git --version
+```
+
+If that fails:
+
+```bash
+sudo apt-get install -y git
+```
+
+### 3. Clone MagicMirror
+
+```bash
+cd ~
+git clone https://github.com/MagicMirrorOrg/MagicMirror.git
+```
+
+### 4. Enter the repository
 
 ```bash
 cd ~/MagicMirror
+```
+
+### 5. Install the application
+
+```bash
+node --run install-mm
+```
+
+This can take a long time on a Pi with little terminal output. Do not interrupt it.
+
+### 6. Make a copy of the config sample file
+
+```bash
+cp config/config.js.sample config/config.js
+```
+
+### 7. Start MagicMirror (optional test)
+
+```bash
 node --run start
 ```
 
-Stop with `Ctrl+C` when it looks OK.
+Stop with `Ctrl+C` when you are done testing.
 
 ---
 
 ## Step 2 — Install modules
 
-See the full list (with clone URLs) in **[MODULES.md](MODULES.md)**.
-
-Minimum set used by the house configs in this repo:
-
 ```bash
 cd ~/MagicMirror/modules
+```
 
+Clone the modules you need. Full list with install commands: **[MODULES.md](MODULES.md)**.
+
+Example (our common set):
+
+```bash
 git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
 cd MMM-LocalPrayerTime && npm install && cd ..
 
@@ -59,27 +93,27 @@ git clone https://github.com/Zamy97/MMM-DailyDua.git
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
 ```
 
-For everything that was on Tushar bhai’s Pi, copy the third-party clone block from [MODULES.md](MODULES.md).
+Add any other modules from [MODULES.md](MODULES.md) that your house `config.js` uses.
 
 ---
 
-## Step 3 — Config + CSS
+## Step 3 — Config and CSS
 
-Clone this repo (or copy the house folder over):
+Clone this setup repo (or copy files another way):
 
 ```bash
 cd ~
 git clone https://github.com/Zamy97/magicmirror-house-setup.git
 ```
 
-**Tushar bhai** example:
+Copy the house folder you want into MagicMirror (replace `HOUSE-FOLDER` with the folder name under `houses/`):
 
 ```bash
-cp ~/magicmirror-house-setup/houses/Tushar-bhai-Magic-Mirror-Config/config.js ~/MagicMirror/config/config.js
-cp ~/magicmirror-house-setup/houses/Tushar-bhai-Magic-Mirror-Config/custom.css ~/MagicMirror/css/custom.css
+cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
+cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
 ```
 
-Edit location if needed:
+Edit lat / lon / timezone if needed:
 
 ```bash
 nano ~/MagicMirror/config/config.js
@@ -87,7 +121,9 @@ nano ~/MagicMirror/config/config.js
 
 ---
 
-## Step 4 — PM2 (auto-start)
+## Step 4 — Configure PM2
+
+So MagicMirror starts on boot and restarts if it crashes:
 
 ```bash
 sudo npm install -g pm2
@@ -96,11 +132,15 @@ cd ~/MagicMirror
 pm2 start "node --run start" --name magicmirror
 pm2 save
 pm2 startup
-# run the sudo line PM2 prints, then:
+```
+
+Run the `sudo` command that `pm2 startup` prints, then:
+
+```bash
 pm2 save
 ```
 
-Later:
+Useful commands:
 
 ```bash
 pm2 status
@@ -110,13 +150,13 @@ pm2 restart magicmirror
 
 ---
 
-## Updating config/CSS later
+## Updating later
 
 ```bash
 cd ~/magicmirror-house-setup
 git pull
 
-cp houses/Tushar-bhai-Magic-Mirror-Config/config.js ~/MagicMirror/config/config.js
-cp houses/Tushar-bhai-Magic-Mirror-Config/custom.css ~/MagicMirror/css/custom.css
+cp houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
+cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
 pm2 restart magicmirror
 ```

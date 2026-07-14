@@ -1,16 +1,16 @@
-# MagicMirror modules (from Tushar bhai’s Pi)
+# MagicMirror modules
 
-Quick reference: what was installed under `~/MagicMirror/modules`, and how to install each one on a new Pi.
+Quick reference: modules we use / have used on house Pis, with install commands.
 
-Skip **`default`** — it comes with MagicMirror. Skip **`MMM-PrayerTime.bak`** — that was only a backup folder.
+Skip **`default`** — it comes with MagicMirror. Skip backup folders like **`MMM-PrayerTime.bak`**.
 
-## Install on a new Pi
+## Install on a Pi
 
 ```bash
 cd ~/MagicMirror/modules
 ```
 
-Then clone what you need (copy/paste lines below).
+Then clone what you need.
 
 ### Our modules (Zamy97)
 
@@ -23,7 +23,7 @@ git clone https://github.com/Zamy97/MMM-DailyDua.git
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
 ```
 
-### Third-party modules (as on the Pi)
+### Third-party modules
 
 ```bash
 # Monthly calendar
@@ -71,11 +71,11 @@ git clone https://github.com/ulrichwisser/MMM-Worldclock.git
 | `MMM-WiFiPassword` | https://github.com/TeraTech/MMM-WiFiPassword |
 | `MMM-Worldclock` | https://github.com/ulrichwisser/MMM-Worldclock |
 | `default` | Built into MagicMirror — do not clone |
-| `MMM-PrayerTime.bak` | Backup only — do not clone |
+| `*.bak` | Backup only — do not clone |
 
-## Typical “minimum” set for a new house
+## Typical minimum set
 
-If you only want prayer + dua + hadith (matches the saved house configs):
+Prayer + dua + hadith (matches most house configs in this repo):
 
 ```bash
 cd ~/MagicMirror/modules
@@ -85,4 +85,4 @@ git clone https://github.com/Zamy97/MMM-DailyDua.git
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
 ```
 
-Add the other clones above only when that house’s `config.js` uses them.
+Only add the other clones when that house’s `config.js` uses them.
