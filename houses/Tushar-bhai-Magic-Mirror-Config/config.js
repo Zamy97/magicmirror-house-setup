@@ -1,4 +1,4 @@
-/* MagicMirror² config — Tushaer bhai
+/* MagicMirror² config — Tushar bhai
  * Copy to: ~/MagicMirror/config/config.js
  */
 

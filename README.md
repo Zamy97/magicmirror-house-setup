@@ -1,31 +1,28 @@
 # MagicMirror house setup
 
-Saved **config** and **CSS** per house (by person name), plus a simple step-by-step to set up a Raspberry Pi.
+Step-by-step Pi setup, a **modules list** for easy installs, and saved **config + CSS** per house.
 
-## Houses in this repo
+## Houses
 
-| Folder | Person |
-|--------|--------|
-| `houses/Tushaer-bhai/` | Tushaer bhai — `config.js` + `custom.css` |
-| `houses/Example/` | Template — copy this folder to add a new house |
+| Folder | What it is |
+|--------|------------|
+| [`houses/Tushar-bhai-Magic-Mirror-Config/`](houses/Tushar-bhai-Magic-Mirror-Config/) | **Tushar bhai** — `config.js` + `custom.css` |
+| [`houses/Example/`](houses/Example/) | Template — copy for a new house |
 
-To add someone new:
+Add a new house:
 
 ```bash
-cp -r houses/Example houses/Their-Name
-# edit houses/Their-Name/config.js (lat/lon/timezone)
-# edit houses/Their-Name/custom.css if needed
+cp -r houses/Example "houses/Someone-Name-Magic-Mirror-Config"
+# edit that folder’s config.js (lat / lon / timezone) and custom.css
 ```
 
 ---
 
 ## Step 1 — Install MagicMirror
 
-On the Pi ([official docs](https://docs.magicmirror.builders)):
+On the Pi ([docs](https://docs.magicmirror.builders)):
 
 ```bash
-# Recommended: use the MagicMirror install script, OR:
-
 curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs git
 
@@ -35,7 +32,7 @@ cd ~/MagicMirror
 npm install
 ```
 
-Test it once:
+Quick test:
 
 ```bash
 cd ~/MagicMirror
@@ -48,6 +45,10 @@ Stop with `Ctrl+C` when it looks OK.
 
 ## Step 2 — Install modules
 
+See the full list (with clone URLs) in **[MODULES.md](MODULES.md)**.
+
+Minimum set used by the house configs in this repo:
+
 ```bash
 cd ~/MagicMirror/modules
 
@@ -55,45 +56,38 @@ git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
 cd MMM-LocalPrayerTime && npm install && cd ..
 
 git clone https://github.com/Zamy97/MMM-DailyDua.git
-
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
 ```
 
-(Add more `git clone` lines here when you add modules later.)
+For everything that was on Tushar bhai’s Pi, copy the third-party clone block from [MODULES.md](MODULES.md).
 
 ---
 
-## Step 3 — Config + CSS for this house
+## Step 3 — Config + CSS
 
-Clone or download **this** repo on the Pi (or copy the house folder over USB):
+Clone this repo (or copy the house folder over):
 
 ```bash
 cd ~
 git clone https://github.com/Zamy97/magicmirror-house-setup.git
 ```
 
-Pick the house folder (example: **Tushaer bhai**):
+**Tushar bhai** example:
 
 ```bash
-# Config
-cp ~/magicmirror-house-setup/houses/Tushaer-bhai/config.js ~/MagicMirror/config/config.js
-
-# CSS
-cp ~/magicmirror-house-setup/houses/Tushaer-bhai/custom.css ~/MagicMirror/css/custom.css
+cp ~/magicmirror-house-setup/houses/Tushar-bhai-Magic-Mirror-Config/config.js ~/MagicMirror/config/config.js
+cp ~/magicmirror-house-setup/houses/Tushar-bhai-Magic-Mirror-Config/custom.css ~/MagicMirror/css/custom.css
 ```
 
-Edit coords if needed:
+Edit location if needed:
 
 ```bash
 nano ~/MagicMirror/config/config.js
-# change lat, lon, timezone for that house
 ```
-
-Start MagicMirror again and confirm prayer times / styles look right.
 
 ---
 
-## Step 4 — PM2 (auto-start on boot)
+## Step 4 — PM2 (auto-start)
 
 ```bash
 sudo npm install -g pm2
@@ -102,11 +96,11 @@ cd ~/MagicMirror
 pm2 start "node --run start" --name magicmirror
 pm2 save
 pm2 startup
-# run the sudo command that PM2 prints, then:
+# run the sudo line PM2 prints, then:
 pm2 save
 ```
 
-Useful later:
+Later:
 
 ```bash
 pm2 status
@@ -116,16 +110,13 @@ pm2 restart magicmirror
 
 ---
 
-## Updating a house later
-
-1. Edit the files in GitHub / this repo under `houses/<Name>/`
-2. On the Pi:
+## Updating config/CSS later
 
 ```bash
 cd ~/magicmirror-house-setup
 git pull
 
-cp houses/Tushaer-bhai/config.js ~/MagicMirror/config/config.js
-cp houses/Tushaer-bhai/custom.css ~/MagicMirror/css/custom.css
+cp houses/Tushar-bhai-Magic-Mirror-Config/config.js ~/MagicMirror/config/config.js
+cp houses/Tushar-bhai-Magic-Mirror-Config/custom.css ~/MagicMirror/css/custom.css
 pm2 restart magicmirror
 ```
