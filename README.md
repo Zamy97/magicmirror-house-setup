@@ -1,101 +1,131 @@
 # MagicMirror house setup
 
-One-command (ish) bring-up for Raspberry Pi MagicMirror² houses: Node → MagicMirror → modules → `config.js` + `custom.css` → PM2.
+Saved **config** and **CSS** per house (by person name), plus a simple step-by-step to set up a Raspberry Pi.
 
-Your shared modules already wired in:
+## Houses in this repo
 
-- [MMM-LocalPrayerTime](https://github.com/Zamy97/MMM-LocalPrayerTime)
-- [MMM-DailyDua](https://github.com/Zamy97/MMM-DailyDua)
-- [MMM-DailyHadith](https://github.com/Zamy97/MMM-DailyHadith)
+| Folder | Person |
+|--------|--------|
+| `houses/Tushaer-bhai/` | Tushaer bhai — `config.js` + `custom.css` |
+| `houses/Example/` | Template — copy this folder to add a new house |
 
-## Layout
+To add someone new:
 
-```
-magicmirror-house-setup/
-  config/
-    config.js.template      # shared modules + layout
-    houses/
-      example.env           # copy → <house>.env per home
-  css/
-    custom.css              # shared wall styling
-  modules.txt               # modules to clone
-  ecosystem.config.cjs      # PM2
-  scripts/
-    bootstrap.sh            # full install for a new Pi
-    apply-house.sh          # push config/css only
-    update-all.sh           # pull updates + re-apply + restart
+```bash
+cp -r houses/Example houses/Their-Name
+# edit houses/Their-Name/config.js (lat/lon/timezone)
+# edit houses/Their-Name/custom.css if needed
 ```
 
-## New house / new Pi
+---
 
-### 1. Put this repo on the Pi
+## Step 1 — Install MagicMirror
+
+On the Pi ([official docs](https://docs.magicmirror.builders)):
+
+```bash
+# Recommended: use the MagicMirror install script, OR:
+
+curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs git
+
+cd ~
+git clone https://github.com/MagicMirrorOrg/MagicMirror.git
+cd ~/MagicMirror
+npm install
+```
+
+Test it once:
+
+```bash
+cd ~/MagicMirror
+node --run start
+```
+
+Stop with `Ctrl+C` when it looks OK.
+
+---
+
+## Step 2 — Install modules
+
+```bash
+cd ~/MagicMirror/modules
+
+git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
+cd MMM-LocalPrayerTime && npm install && cd ..
+
+git clone https://github.com/Zamy97/MMM-DailyDua.git
+
+git clone https://github.com/Zamy97/MMM-DailyHadith.git
+```
+
+(Add more `git clone` lines here when you add modules later.)
+
+---
+
+## Step 3 — Config + CSS for this house
+
+Clone or download **this** repo on the Pi (or copy the house folder over USB):
 
 ```bash
 cd ~
-git clone https://github.com/YOUR_USER/magicmirror-house-setup.git
-cd magicmirror-house-setup
+git clone https://github.com/Zamy97/magicmirror-house-setup.git
 ```
 
-(Or `scp` / USB copy if the repo is private/local.)
-
-### 2. Create a house env
+Pick the house folder (example: **Tushaer bhai**):
 
 ```bash
-cp config/houses/example.env config/houses/smith.env
-nano config/houses/smith.env   # set LAT, LON, TIMEZONE, etc.
+# Config
+cp ~/magicmirror-house-setup/houses/Tushaer-bhai/config.js ~/MagicMirror/config/config.js
+
+# CSS
+cp ~/magicmirror-house-setup/houses/Tushaer-bhai/custom.css ~/MagicMirror/css/custom.css
 ```
 
-### 3. Bootstrap
+Edit coords if needed:
 
 ```bash
-./scripts/bootstrap.sh smith
+nano ~/MagicMirror/config/config.js
+# change lat, lon, timezone for that house
 ```
 
-Then enable boot start (PM2 will print the exact command):
+Start MagicMirror again and confirm prayer times / styles look right.
+
+---
+
+## Step 4 — PM2 (auto-start on boot)
 
 ```bash
+sudo npm install -g pm2
+
+cd ~/MagicMirror
+pm2 start "node --run start" --name magicmirror
+pm2 save
 pm2 startup
-# run the sudo command it prints
+# run the sudo command that PM2 prints, then:
 pm2 save
 ```
 
-## Everyday edits (no reinstall)
-
-Edit once in this repo, then push to the Pi:
-
-| Change | Edit | Apply |
-|--------|------|--------|
-| Layout / modules | `config/config.js.template` | `./scripts/apply-house.sh smith` |
-| Look & feel | `css/custom.css` | `./scripts/apply-house.sh smith` |
-| House coords / keys | `config/houses/smith.env` | `./scripts/apply-house.sh smith` |
-| New third-party module | `modules.txt` + template | re-run clone section or full `bootstrap` |
-
-Restart after apply:
+Useful later:
 
 ```bash
+pm2 status
+pm2 logs magicmirror
 pm2 restart magicmirror
 ```
 
-## Update MagicsMirror + modules on a live Pi
+---
+
+## Updating a house later
+
+1. Edit the files in GitHub / this repo under `houses/<Name>/`
+2. On the Pi:
 
 ```bash
 cd ~/magicmirror-house-setup
-./scripts/update-all.sh smith
+git pull
+
+cp houses/Tushaer-bhai/config.js ~/MagicMirror/config/config.js
+cp houses/Tushaer-bhai/custom.css ~/MagicMirror/css/custom.css
+pm2 restart magicmirror
 ```
-
-## Per-house values
-
-`config/houses/<id>.env` becomes `~/MagicMirror/config/config.env`.  
-MagicMirror expands `${LAT}`, `${LON}`, etc. inside `config.js`.
-
-Keep real `*.env` files **out of git** (only `example.env` is tracked).
-
-## Notes
-
-- Default weather uses **Open-Meteo** (free) via MagicMirror’s built-in weather module.
-- Prayer times use **MMM-LocalPrayerTime** (offline calc).
-- PM2 starts `node --run start` in `~/MagicMirror`. For a pure kiosk browser against `serveronly`, change `ecosystem.config.cjs` args to `--run server` and launch Chromium yourself.
-
-## Replace placeholders with your real CSS
-
-Drop your production `custom.css` into `css/custom.css` in this repo whenever you polish the mirror UI. Same for adjusting module positions in `config.js.template`.

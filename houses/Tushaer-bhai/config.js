@@ -1,9 +1,5 @@
-/* MagicMirror² house config — generated from magicmirror-house-setup.
- * Shared layout lives in this template.
- * House-specific values come from config/houses/<house>.env → config.env (${VARS}).
- *
- * Re-apply after edits:
- *   ./scripts/apply-house.sh <house>
+/* MagicMirror² config — Tushaer bhai
+ * Copy to: ~/MagicMirror/config/config.js
  */
 
 let config = {
@@ -13,26 +9,21 @@ let config = {
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
 
 	useHttps: false,
-	language: "${LANGUAGE}",
+	language: "en",
 	locale: "en-US",
 	logLevel: ["INFO", "LOG", "WARN", "ERROR"],
-	timeFormat: ${TIME_FORMAT},
-	units: "${UNITS}",
+	timeFormat: 12,
+	units: "imperial",
 	customCss: "css/custom.css",
 
 	modules: [
-		{
-			module: "alert",
-		},
-		{
-			module: "updatenotification",
-			position: "top_bar",
-		},
+		{ module: "alert" },
+		{ module: "updatenotification", position: "top_bar" },
 		{
 			module: "clock",
 			position: "top_left",
 			config: {
-				timeFormat: ${TIME_FORMAT},
+				timeFormat: 12,
 				displaySeconds: true,
 				showPeriod: true,
 				showDate: true,
@@ -42,12 +33,12 @@ let config = {
 			module: "MMM-LocalPrayerTime",
 			position: "top_left",
 			config: {
-				lat: ${LAT},
-				lon: ${LON},
-				timezone: "${TIMEZONE}",
-				method: "${PRAYER_METHOD}",
-				asr: "${PRAYER_ASR}",
-				timeFormat: ${TIME_FORMAT},
+				lat: 42.4710579,
+				lon: -83.0133362,
+				timezone: "America/Detroit",
+				method: "ISNA",
+				asr: "Hanafi",
+				timeFormat: 12,
 				showTomorrow: false,
 				vertical: true,
 				highlightCurrent: true,
@@ -61,8 +52,8 @@ let config = {
 			config: {
 				weatherProvider: "openmeteo",
 				type: "current",
-				lat: ${LAT},
-				lon: ${LON},
+				lat: 42.4710579,
+				lon: -83.0133362,
 				degreeLabel: true,
 				showHumidity: "none",
 				showSun: true,
@@ -80,7 +71,7 @@ let config = {
 				showBangla: true,
 				showReference: true,
 				showNarrator: true,
-				language: "${LANGUAGE}",
+				language: "en",
 				rotationMode: "daily",
 			},
 		},
@@ -95,7 +86,7 @@ let config = {
 				showTranslation: true,
 				showReference: true,
 				showRepeat: true,
-				language: "${LANGUAGE}",
+				language: "en",
 				rotationMode: "interval",
 				rotateEveryHours: 3,
 				filterByTime: true,

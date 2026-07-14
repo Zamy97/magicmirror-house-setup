@@ -1,18 +1,10 @@
-/* ============================================================
- * House MagicMirror custom.css
- * Edit here in the setup repo, then:
- *   ./scripts/apply-house.sh <house>
- * (copies this file to ~/MagicMirror/css/custom.css)
- * ============================================================ */
+/* MagicMirror² custom.css — Example house
+ * Copy to: ~/MagicMirror/css/custom.css
+ */
 
 :root {
 	--house-accent: #f4d03f;
 	--house-muted: #b8d4e8;
-}
-
-/* Slightly larger base type for wall / TV distance viewing */
-body {
-	font-weight: 400;
 }
 
 .region.bottom.bar {
@@ -20,7 +12,6 @@ body {
 	margin: 0 auto;
 }
 
-/* ---- Prayer times ---- */
 .MMM-LocalPrayerTime table {
 	width: min(320px, 36vw);
 }
@@ -36,7 +27,6 @@ body {
 	font-weight: 700;
 }
 
-/* ---- Hadith ---- */
 .MMM-DailyHadith .hadith-title {
 	letter-spacing: 0.08em;
 	color: var(--house-accent);
@@ -50,7 +40,6 @@ body {
 	color: #d7e8ff;
 }
 
-/* ---- Dua ---- */
 .MMM-DailyDua .dua-title {
 	letter-spacing: 0.1em;
 	color: var(--house-accent);
@@ -65,7 +54,6 @@ body {
 	line-height: 1.85;
 }
 
-/* ---- Default clock / weather polish ---- */
 .clock .time {
 	font-weight: 700;
 }
