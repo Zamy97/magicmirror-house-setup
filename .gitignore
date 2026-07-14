@@ -1,0 +1,13 @@
+# Per-house secrets (keep example)
+config/houses/*.env
+!config/houses/example.env
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Local notes
+*.local.md
+secrets/

@@ -1,0 +1,6 @@
+# One module per line: <git-url> [npm]
+# Add "npm" as a second field when the module needs npm install after clone.
+
+https://github.com/Zamy97/MMM-LocalPrayerTime.git npm
+https://github.com/Zamy97/MMM-DailyDua.git
+https://github.com/Zamy97/MMM-DailyHadith.git

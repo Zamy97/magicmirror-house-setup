@@ -1,0 +1,112 @@
+/* MagicMirror² house config — generated from magicmirror-house-setup.
+ * Shared layout lives in this template.
+ * House-specific values come from config/houses/<house>.env → config.env (${VARS}).
+ *
+ * Re-apply after edits:
+ *   ./scripts/apply-house.sh <house>
+ */
+
+let config = {
+	address: "localhost",
+	port: 8080,
+	basePath: "/",
+	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
+
+	useHttps: false,
+	language: "${LANGUAGE}",
+	locale: "en-US",
+	logLevel: ["INFO", "LOG", "WARN", "ERROR"],
+	timeFormat: ${TIME_FORMAT},
+	units: "${UNITS}",
+	customCss: "css/custom.css",
+
+	modules: [
+		{
+			module: "alert",
+		},
+		{
+			module: "updatenotification",
+			position: "top_bar",
+		},
+		{
+			module: "clock",
+			position: "top_left",
+			config: {
+				timeFormat: ${TIME_FORMAT},
+				displaySeconds: true,
+				showPeriod: true,
+				showDate: true,
+			},
+		},
+		{
+			module: "MMM-LocalPrayerTime",
+			position: "top_left",
+			config: {
+				lat: ${LAT},
+				lon: ${LON},
+				timezone: "${TIMEZONE}",
+				method: "${PRAYER_METHOD}",
+				asr: "${PRAYER_ASR}",
+				timeFormat: ${TIME_FORMAT},
+				showTomorrow: false,
+				vertical: true,
+				highlightCurrent: true,
+				notDisplayed: ["sunrise", "sunset", "midnight"],
+			},
+		},
+		{
+			module: "weather",
+			position: "top_right",
+			header: "Weather",
+			config: {
+				weatherProvider: "openmeteo",
+				type: "current",
+				lat: ${LAT},
+				lon: ${LON},
+				degreeLabel: true,
+				showHumidity: "none",
+				showSun: true,
+			},
+		},
+		{
+			module: "MMM-DailyHadith",
+			position: "bottom_bar",
+			config: {
+				showTitle: true,
+				showTopic: true,
+				showSummary: true,
+				showArabic: true,
+				showTranslation: true,
+				showBangla: true,
+				showReference: true,
+				showNarrator: true,
+				language: "${LANGUAGE}",
+				rotationMode: "daily",
+			},
+		},
+		{
+			module: "MMM-DailyDua",
+			position: "bottom_bar",
+			config: {
+				showTitle: true,
+				showCategory: true,
+				showArabic: true,
+				showTransliteration: true,
+				showTranslation: true,
+				showReference: true,
+				showRepeat: true,
+				language: "${LANGUAGE}",
+				rotationMode: "interval",
+				rotateEveryHours: 3,
+				filterByTime: true,
+				morningTime: "05:00",
+				eveningTime: "16:00",
+			},
+		},
+	],
+};
+
+/*************** DO NOT EDIT THE LINE BELOW ***************/
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

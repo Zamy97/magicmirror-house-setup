@@ -1,0 +1,75 @@
+/* ============================================================
+ * House MagicMirror custom.css
+ * Edit here in the setup repo, then:
+ *   ./scripts/apply-house.sh <house>
+ * (copies this file to ~/MagicMirror/css/custom.css)
+ * ============================================================ */
+
+:root {
+	--house-accent: #f4d03f;
+	--house-muted: #b8d4e8;
+}
+
+/* Slightly larger base type for wall / TV distance viewing */
+body {
+	font-weight: 400;
+}
+
+.region.bottom.bar {
+	max-width: 96vw;
+	margin: 0 auto;
+}
+
+/* ---- Prayer times ---- */
+.MMM-LocalPrayerTime table {
+	width: min(320px, 36vw);
+}
+
+.MMM-LocalPrayerTime .current-prayer {
+	color: var(--house-accent);
+	font-weight: 700;
+	font-size: 115%;
+	text-shadow: 0 0 10px rgba(244, 208, 63, 0.45);
+}
+
+.MMM-LocalPrayerTime .occasion-time {
+	font-weight: 700;
+}
+
+/* ---- Hadith ---- */
+.MMM-DailyHadith .hadith-title {
+	letter-spacing: 0.08em;
+	color: var(--house-accent);
+}
+
+.MMM-DailyHadith .hadith-summary {
+	border-left: 3px solid var(--house-accent);
+}
+
+.MMM-DailyHadith .hadith-bangla {
+	color: #d7e8ff;
+}
+
+/* ---- Dua ---- */
+.MMM-DailyDua .dua-title {
+	letter-spacing: 0.1em;
+	color: var(--house-accent);
+}
+
+.MMM-DailyDua .dua-transliteration {
+	color: var(--house-muted);
+}
+
+.MMM-DailyDua .dua-arabic {
+	font-size: 1.35rem;
+	line-height: 1.85;
+}
+
+/* ---- Default clock / weather polish ---- */
+.clock .time {
+	font-weight: 700;
+}
+
+.weather .temperature {
+	font-weight: 700;
+}
