@@ -1,7 +1,9 @@
-/* MagicMirror² config — Tushar bhai
+/* MagicMirror² Config — Tushar bhai
  * Copy to: ~/MagicMirror/config/config.js
+ * Fill in OpenWeather api keys and WiFi details on the Pi (do not commit secrets).
+ *
+ * Based on: https://docs.magicmirror.builders/configuration/introduction.html
  */
-
 let config = {
 	address: "localhost",
 	port: 8080,
@@ -9,24 +11,103 @@ let config = {
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
 
 	useHttps: false,
+	httpsPrivateKey: "",
+	httpsCertificate: "",
+
 	language: "en",
 	locale: "en-US",
 	logLevel: ["INFO", "LOG", "WARN", "ERROR"],
 	timeFormat: 12,
 	units: "imperial",
-	customCss: "css/custom.css",
 
 	modules: [
-		{ module: "alert" },
-		{ module: "updatenotification", position: "top_bar" },
+		{
+			module: "alert",
+		},
+		{
+			module: "updatenotification",
+			position: "top_bar",
+		},
 		{
 			module: "clock",
 			position: "top_left",
 			config: {
-				timeFormat: 12,
 				displaySeconds: true,
-				showPeriod: true,
-				showDate: true,
+				zoom: 1.0,
+			},
+		},
+		{
+			module: "MMM-DynamicWeather",
+			position: "fullscreen_above",
+			config: {
+				// See https://github.com/scottcl88/MMM-DynamicWeather
+				api_key: "", // OpenWeather API key
+				lat: 42.4710579,
+				lon: -83.0133362,
+				locationID: "5014051",
+				hideFog: true,
+				hideSun: true,
+				hideMoon: true,
+				effects: [
+					{
+						month: "",
+						day: "",
+						year: "",
+						images: [],
+						direction: "down",
+					},
+				],
+			},
+		},
+		{
+			module: "currentislamicdate",
+			position: "bottom_right",
+		},
+		{
+			module: "MMM-DailyDua",
+			position: "bottom_bar",
+			config: {
+				language: "bn",
+				rotationMode: "interval",
+				rotateEveryHours: 3,
+				filterByTime: true,
+				morningTime: "05:00",
+				eveningTime: "16:00",
+				strictMorningEvening: true,
+				showTitle: true,
+				showCategory: true,
+				showArabic: true,
+				showTransliteration: true,
+				showTranslation: true,
+				showReference: true,
+				showRepeat: true,
+			},
+		},
+		{
+			module: "MMM-DailyHadith",
+			position: "bottom_bar",
+			config: {
+				showTitle: true,
+				showTopic: false,
+				showSummary: true,
+				showArabic: false,
+				showTranslation: true,
+				showBangla: true,
+				showReference: true,
+				language: "bn",
+				rotationMode: "daily",
+			},
+		},
+		{
+			module: "MMM-RandomQuranAyah",
+			position: "bottom_bar",
+			config: {
+				apiVersion: "1.0",
+				showArabic: true,
+				showTranslation: true,
+				surahArabicName: false,
+				translationLang: "en.yusufali",
+				updateInterval: 300000,
 			},
 		},
 		{
@@ -42,56 +123,92 @@ let config = {
 				showTomorrow: false,
 				vertical: true,
 				highlightCurrent: true,
-				notDisplayed: ["sunrise", "sunset", "midnight"],
+				notDisplayed: [],
 			},
 		},
 		{
-			module: "weather",
+			module: "calendar_monthly",
+			position: "top_left",
+			config: {},
+		},
+		{
+			module: "MMM-Worldclock",
+			position: "top_left",
+			config: {
+				timeFormat: "hh:mm A",
+				style: "top",
+				offsetTimezone: null,
+				clocks: [
+					{
+						title: "LONDON",
+						timezone: "Europe/London",
+						flag: "gb",
+					},
+					{
+						title: "DHAKA",
+						timezone: "Asia/Dhaka",
+						flag: "bd",
+					},
+					{
+						title: "MACCA",
+						timezone: "Asia/Riyadh",
+						flag: "sa",
+					},
+					{
+						title: "GAZA",
+						timezone: "Asia/Gaza",
+						flag: "ps",
+					},
+				],
+			},
+		},
+		{
+			module: "MMM-WiFiPassword",
+			position: "top_left",
+			config: {
+				header: "",
+				network: "YOUR_WIFI_SSID", // set on the Pi — do not commit real SSID/password
+				password: "YOUR_WIFI_PASSWORD",
+				showPassword: false,
+				showAuthType: false,
+				showNetwork: true,
+				qrSize: 88,
+				layoutVertical: true,
+				colorDark: "#ffffff",
+				colorLight: "#000000",
+			},
+		},
+		{
+			module: "MMM-OpenmapWeather",
 			position: "top_right",
+			header: "Current Weather",
+			config: {
+				locationID: "4988400",
+				appid: "", // openweathermap.org API key
+				colorIcon: true,
+			},
+		},
+		{
+			module: "MMM-OpenWeatherMapForecast",
 			header: "Weather",
+			position: "top_right",
+			classes: "default everyone",
+			disabled: false,
 			config: {
-				weatherProvider: "openmeteo",
-				type: "current",
-				lat: 42.4710579,
-				lon: -83.0133362,
-				degreeLabel: true,
-				showHumidity: "none",
-				showSun: true,
-			},
-		},
-		{
-			module: "MMM-DailyHadith",
-			position: "bottom_bar",
-			config: {
-				showTitle: true,
-				showTopic: true,
-				showSummary: true,
-				showArabic: true,
-				showTranslation: true,
-				showBangla: true,
-				showReference: true,
-				showNarrator: true,
-				language: "en",
-				rotationMode: "daily",
-			},
-		},
-		{
-			module: "MMM-DailyDua",
-			position: "bottom_bar",
-			config: {
-				showTitle: true,
-				showCategory: true,
-				showArabic: true,
-				showTransliteration: true,
-				showTranslation: true,
-				showReference: true,
-				showRepeat: true,
-				language: "en",
-				rotationMode: "interval",
-				rotateEveryHours: 3,
-				filterByTime: true,
-				morningTime: "05:00",
-				eveningTime: "16:00",
+				apikey: "", // openweathermap.org API key
+				latitude: "42.4961493",
+				longitude: "-82.9926113",
+				iconset: "6fa",
+				concise: false,
+				forecastLayout: "tiled",
+				maxHourliesToShow: 2,
+				showCurrentConditions: false,
+				maxDailiesToShow: 6,
+				showPrecipitation: false,
+				showWind: false,
+				showHourlyForecast: true,
+				showSummary: false,
+				showExtraCurrentConditions: false,
 			},
 		},
 	],
