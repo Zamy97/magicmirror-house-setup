@@ -1,63 +1,598 @@
-/* MagicMirror² custom.css — Tushar bhai
- * Copy to: ~/MagicMirror/css/custom.css
- */
+/* ============================================================
+   MagicMirror — refined theme (Tushar bhai)
+   Boxes: prayer, calendar, world clock + WiFi
+   Clock & weather: clean, open, larger text
+   Copy to: ~/MagicMirror/css/custom.css
+   ============================================================ */
 
 :root {
-	--house-accent: #f4d03f;
-	--house-muted: #b8d4e8;
+  --accent: #76D7C4;
+  --accent-2: #4DD0E1;
+  --gold: #F4D03F;
+  --gold-dim: #C9A227;
+  --text: #EAF6FF;
+  --text-dim: rgba(234, 246, 255, 0.82);
+  --text-faint: rgba(234, 246, 255, 0.6);
+  --purple: #E8B4FF;
+  --mint: #7DFFB8;
+  --card-bg: linear-gradient(160deg, rgba(63, 182, 236, 0.14), rgba(8, 22, 36, 0.78));
+  --card-border: rgba(118, 215, 196, 0.35);
+  --card-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+  --radius: 12px;
+  --card-width: 300px;
+  --combo-height: 124px;
 }
 
-.region.bottom.bar {
-	max-width: 96vw;
-	margin: 0 auto;
+/* ── Global ───────────────────────────────────────────────── */
+body {
+  zoom: 100%;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9),
+               0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.MMM-LocalPrayerTime table {
-	width: min(320px, 36vw);
+.module {
+  margin-bottom: 10px;
 }
 
-.MMM-LocalPrayerTime .current-prayer {
-	color: var(--house-accent);
-	font-weight: 700;
-	font-size: 115%;
-	text-shadow: 0 0 10px rgba(244, 208, 63, 0.45);
-}
-
-.MMM-LocalPrayerTime .occasion-time {
-	font-weight: 700;
-}
-
-.MMM-DailyHadith .hadith-title {
-	letter-spacing: 0.08em;
-	color: var(--house-accent);
-}
-
-.MMM-DailyHadith .hadith-summary {
-	border-left: 3px solid var(--house-accent);
-}
-
-.MMM-DailyHadith .hadith-bangla {
-	color: #d7e8ff;
-}
-
-.MMM-DailyDua .dua-title {
-	letter-spacing: 0.1em;
-	color: var(--house-accent);
-}
-
-.MMM-DailyDua .dua-transliteration {
-	color: var(--house-muted);
-}
-
-.MMM-DailyDua .dua-arabic {
-	font-size: 1.35rem;
-	line-height: 1.85;
+/* ── Clock — no box, hero style ───────────────────────────── */
+.region.top.left .module.clock {
+  width: var(--card-width);
+  margin-bottom: 4px;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  box-shadow: none;
 }
 
 .clock .time {
-	font-weight: 700;
+  color: var(--accent);
+  font-weight: 200;
+  font-size: 3.6rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
 
-.weather .temperature {
-	font-weight: 700;
+.clock .date {
+  color: var(--accent-2);
+  font-size: 1.2rem;
+  margin-top: 4px;
+  letter-spacing: 0.03em;
+}
+
+.clock .sun {
+  display: none;
+}
+
+/* ── Prayer times — boxed ─────────────────────────────────── */
+.MMM-LocalPrayerTime {
+  width: var(--card-width);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.MMM-LocalPrayerTime table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+}
+
+.MMM-LocalPrayerTime td {
+  padding: 5px 8px;
+  border-radius: 6px;
+  color: var(--text-dim);
+  background: transparent !important;
+  border-left: none !important;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.MMM-LocalPrayerTime .header-row td {
+  color: var(--accent-2);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-bottom: 6px;
+}
+
+.MMM-LocalPrayerTime .occasion-name {
+  text-align: left;
+}
+
+.MMM-LocalPrayerTime .occasion-time {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.MMM-LocalPrayerTime .current-prayer {
+  color: var(--gold) !important;
+  font-weight: 600 !important;
+  font-size: 1.08em !important;
+  background: rgba(244, 208, 63, 0.14) !important;
+  border-left: 3px solid var(--gold) !important;
+  text-shadow: 0 0 8px rgba(244, 208, 63, 0.35);
+}
+
+.MMM-LocalPrayerTime .error {
+  color: #ff6b6b;
+}
+
+/* ── Calendar — boxed ─────────────────────────────────────── */
+.calendar_monthly {
+  width: var(--card-width);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.calendar_monthly .table {
+  width: 100%;
+}
+
+.calendar_monthly .day {
+  border-radius: 4px;
+}
+
+.calendar_monthly .today {
+  background: rgba(244, 208, 63, 0.28) !important;
+  color: var(--gold) !important;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+/* ── World clock + WiFi — side by side, one aligned card ──── */
+.region.top.left .module.MMM-Worldclock {
+  display: inline-block;
+  width: 182px;
+  height: var(--combo-height);
+  vertical-align: top;
+  margin: 0 0 10px 0 !important;
+  padding: 8px 8px 8px 12px;
+  box-sizing: border-box;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  box-shadow: none;
+  text-align: left;
+  overflow: hidden;
+}
+
+.region.top.left .module.MMM-Worldclock .module-content,
+.region.top.left .module.MMM-Worldclock .worldtime {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.region.top.left .module.MMM-Worldclock .world {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 2px 2px;
+}
+
+.region.top.left .module.MMM-Worldclock .zone {
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  line-height: 1.1;
+}
+
+.region.top.left .module.MMM-Worldclock .main,
+.region.top.left .module.MMM-Worldclock .time {
+  font-size: 0.82rem;
+  color: var(--accent);
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+.region.top.left .module.MMM-Worldclock .title,
+.region.top.left .module.MMM-Worldclock .city {
+  color: var(--text-faint);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+}
+
+.region.top.left .module.MMM-Worldclock .gap {
+  display: none;
+}
+
+.region.top.left .module.MMM-Worldclock img {
+  width: 16px;
+  height: auto;
+}
+
+/* WiFi — right half, same height as world clock */
+.region.top.left .module.MMM-WiFiPassword {
+  display: inline-block;
+  width: 118px;
+  height: var(--combo-height);
+  vertical-align: top;
+  margin: 0 0 10px -4px !important;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: none;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  box-shadow: var(--card-shadow);
+  opacity: 1;
+  transform: none;
+  text-align: center;
+  overflow: hidden;
+}
+
+.region.top.left .module.MMM-WiFiPassword .header {
+  display: none !important;
+}
+
+.region.top.left .module.MMM-WiFiPassword .module-content,
+.region.top.left .module.MMM-WiFiPassword .layout-vertical,
+.region.top.left .module.MMM-WiFiPassword .layout-horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.region.top.left .module.MMM-WiFiPassword img,
+.region.top.left .module.MMM-WiFiPassword canvas {
+  width: 72px !important;
+  height: 72px !important;
+}
+
+.region.top.left .module.MMM-WiFiPassword .network,
+.region.top.left .module.MMM-WiFiPassword .password,
+.region.top.left .module.MMM-WiFiPassword span {
+  font-size: 0.62rem;
+  line-height: 1.15;
+  color: var(--text-dim);
+  word-break: break-word;
+}
+
+.region.top.left .module.MMM-WiFiPassword .bright {
+  color: var(--accent) !important;
+}
+
+/* ── Current weather — BIG, stays right ──────────────────── */
+.MMM-OpenmapWeather {
+  width: 300px;
+  padding: 0 8px;
+  text-align: right;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.MMM-OpenmapWeather .module-header,
+.MMM-OpenmapWeather header {
+  color: var(--accent-2);
+  font-size: 1.1rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
+/* Main temperature */
+.MMM-OpenmapWeather .bright.large,
+.MMM-OpenmapWeather .large.bright,
+.MMM-OpenmapWeather .temperature,
+.MMM-OpenmapWeather .temp {
+  color: var(--accent) !important;
+  font-size: 4.5rem !important;
+  font-weight: 300 !important;
+  line-height: 1.05 !important;
+}
+
+/* Feels like, wind, sunrise — bigger but right-aligned */
+.MMM-OpenmapWeather .normal,
+.MMM-OpenmapWeather .medium,
+.MMM-OpenmapWeather .small,
+.MMM-OpenmapWeather .feelslike,
+.MMM-OpenmapWeather .feels-like,
+.MMM-OpenmapWeather .wi,
+.MMM-OpenmapWeather span {
+  font-size: 1.35rem !important;
+  color: var(--text-dim) !important;
+  line-height: 1.45 !important;
+}
+
+.MMM-OpenmapWeather .bright:not(.large) {
+  color: var(--accent) !important;
+  font-size: 1.35rem !important;
+}
+
+.MMM-OpenmapWeather img {
+  width: 80px !important;
+  height: 80px !important;
+  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
+}
+
+/* ── Weather forecast — bigger, stays right ─────────────── */
+.MMM-OpenWeatherMapForecast {
+  width: 300px;
+  padding: 4px 8px;
+  text-align: right;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.MMM-OpenWeatherMapForecast .module-header,
+.MMM-OpenWeatherMapForecast header {
+  color: var(--accent-2);
+  font-size: 1.1rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
+.MMM-OpenWeatherMapForecast .module-content,
+.MMM-OpenWeatherMapForecast .wrapper,
+.MMM-OpenWeatherMapForecast .forecast-container {
+  text-align: right !important;
+  justify-content: flex-end !important;
+}
+
+.MMM-OpenWeatherMapForecast .forecast,
+.MMM-OpenWeatherMapForecast .forecast-item,
+.MMM-OpenWeatherMapForecast .daily,
+.MMM-OpenWeatherMapForecast .hourly {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 8px;
+  padding: 4px 6px;
+  background: none;
+  border: none;
+  min-width: unset;
+  text-align: center;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-day,
+.MMM-OpenWeatherMapForecast .day,
+.MMM-OpenWeatherMapForecast .date,
+.MMM-OpenWeatherMapForecast .time {
+  color: var(--text-dim) !important;
+  font-size: 1.1rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-temp,
+.MMM-OpenWeatherMapForecast .max-temp,
+.MMM-OpenWeatherMapForecast .temperature,
+.MMM-OpenWeatherMapForecast .bright {
+  color: var(--accent) !important;
+  font-size: 1.35rem !important;
+  font-weight: 500 !important;
+}
+
+.MMM-OpenWeatherMapForecast .min-temp {
+  color: var(--text-faint) !important;
+  font-size: 1.15rem !important;
+}
+
+.MMM-OpenWeatherMapForecast .dimmed,
+.MMM-OpenWeatherMapForecast .normal,
+.MMM-OpenWeatherMapForecast .small,
+.MMM-OpenWeatherMapForecast span {
+  font-size: 1.1rem !important;
+  color: var(--text-dim) !important;
+}
+
+.MMM-OpenWeatherMapForecast .wi,
+.MMM-OpenWeatherMapForecast img {
+  font-size: 1.8rem !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+/* ── Islamic date (bottom right) ──────────────────────────── */
+.currentislamicdate,
+.module.currentislamicdate {
+  color: var(--gold);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-align: right;
+  padding-right: 8px;
+}
+
+/* ── Bottom bar — tighter stack ───────────────────────────── */
+.region.bottom.bar {
+  width: 92%;
+  margin: 0 auto;
+}
+
+.region.bottom.bar .module {
+  margin-bottom: 0;
+}
+
+/* ── Daily Dua ────────────────────────────────────────────── */
+.MMM-DailyDua {
+  padding: 2px 16px 0;
+  text-align: center;
+}
+
+.MMM-DailyDua .dua-title {
+  color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.MMM-DailyDua .dua-category,
+.MMM-DailyDua .dua-name {
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+  color: var(--accent-2);
+}
+
+.MMM-DailyDua .dua-arabic {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  direction: rtl;
+  color: #ffffff;
+  max-width: 880px;
+  margin: 0 auto 6px;
+}
+
+.MMM-DailyDua .dua-transliteration {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: #b8d4e8;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.MMM-DailyDua .dua-translation,
+.MMM-DailyDua .dua-bangla {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 880px;
+  margin: 0 auto 4px;
+  color: var(--text);
+}
+
+.MMM-DailyDua .dua-bangla {
+  color: #d7f0ff;
+}
+
+.MMM-DailyDua .dua-repeat {
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.MMM-DailyDua .dua-reference {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.MMM-DailyDua .error {
+  color: #ff6b6b;
+}
+
+/* ── Daily Hadith — compact ───────────────────────────────── */
+.MMM-DailyHadith {
+  padding: 2px 16px 0;
+  text-align: center;
+}
+
+.MMM-DailyHadith .hadith-title {
+  color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.MMM-DailyHadith .hadith-topic {
+  color: var(--accent-2);
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+}
+
+.MMM-DailyHadith .hadith-arabic {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  direction: rtl;
+  text-align: center;
+  color: #ffffff;
+  max-width: 880px;
+  margin: 0 auto 6px;
+}
+
+.MMM-DailyHadith .hadith-translation,
+.MMM-DailyHadith .hadith-bangla {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 880px;
+  margin: 0 auto 4px;
+  color: var(--text);
+}
+
+.MMM-DailyHadith .hadith-bangla {
+  color: #d4eeff;
+}
+
+.MMM-DailyHadith .hadith-summary {
+  display: inline-block;
+  max-width: 800px;
+  margin: 4px auto 0;
+  padding: 4px 10px;
+  background: rgba(244, 208, 63, 0.06);
+  border-left: 3px solid var(--gold-dim);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+  text-align: left;
+}
+
+.MMM-DailyHadith .hadith-summary-label {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.MMM-DailyHadith .hadith-reference {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  margin-top: 1px;
+}
+
+.MMM-DailyHadith .error {
+  color: #ff6b6b;
+}
+
+/* ── Quran ayah — compact footer ──────────────────────────── */
+.MMM-RandomQuranAyah {
+  padding: 4px 16px 2px;
+  border-top: 1px solid rgba(118, 215, 196, 0.15);
+  margin-top: 2px;
+}
+
+.MMM-RandomQuranAyah .txt-arabic {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--purple);
+  direction: rtl;
+  text-align: center;
+  text-shadow: 0 0 16px rgba(232, 180, 255, 0.3);
+}
+
+.MMM-RandomQuranAyah .txt-translation {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--mint);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Update notification ──────────────────────────────────── */
+.module.updatenotification {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  color: var(--gold);
+}
+
+/* ── Dynamic weather background ───────────────────────────── */
+.MMM-DynamicWeather {
+  pointer-events: none;
 }
