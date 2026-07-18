@@ -2,7 +2,7 @@
    MagicMirror — refined theme (Example house template)
    Boxes: prayer, calendar, world clock + WiFi
    Clock & weather: clean, open, larger text
-   Copy to: ~/MagicMirror/css/custom.css
+   Copy to: ~/MagicMirror/config/custom.css  (new MagicMirror versions load custom CSS from config/)
    ============================================================ */
 
 :root {

@@ -110,6 +110,12 @@ Copy the house folder you want into MagicMirror (replace `HOUSE-FOLDER` with the
 
 ```bash
 cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
+cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
+```
+
+New MagicMirror versions load custom CSS from `config/custom.css` ([docs](https://docs.magicmirror.builders/configuration/customcss.html)). If the Pi runs an **older** MagicMirror that still uses `css/custom.css`, copy it there too:
+
+```bash
 cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
 ```
 
@@ -157,6 +163,6 @@ cd ~/magicmirror-house-setup
 git pull
 
 cp houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
-cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
+cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
 pm2 restart magicmirror
 ```
