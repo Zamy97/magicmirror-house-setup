@@ -1,8 +1,8 @@
 /* ============================================================
-   MagicMirror — refined theme (Example house template)
-   Boxes: prayer, calendar, world clock + WiFi
+   MagicMirror — refined theme
+   Boxes: prayer, calendar, world clock, WiFi QR
    Clock & weather: clean, open, larger text
-   Copy to: ~/MagicMirror/config/custom.css  (new MagicMirror versions load custom CSS from config/)
+   Copy to: ~/MagicMirror/config/custom.css
    ============================================================ */
 
 :root {
@@ -20,7 +20,6 @@
   --card-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
   --radius: 12px;
   --card-width: 300px;
-  --combo-height: 124px;
 }
 
 /* ── Global ───────────────────────────────────────────────── */
@@ -149,59 +148,53 @@ body {
   border-radius: 50%;
 }
 
-/* ── World clock + WiFi — side by side, one aligned card ──── */
+/* ── World clock — its own box ────────────────────────────── */
 .region.top.left .module.MMM-Worldclock {
-  display: inline-block;
-  width: 182px;
-  height: var(--combo-height);
-  vertical-align: top;
-  margin: 0 0 10px 0 !important;
-  padding: 8px 8px 8px 12px;
+  width: var(--card-width);
   box-sizing: border-box;
+  margin-bottom: 10px !important;
+  padding: 12px 14px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-right: none;
-  border-radius: var(--radius) 0 0 var(--radius);
-  box-shadow: none;
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
   text-align: left;
-  overflow: hidden;
 }
 
+/* 4 clocks in a 2×2 grid */
 .region.top.left .module.MMM-Worldclock .module-content,
 .region.top.left .module.MMM-Worldclock .worldtime {
-  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: center;
 }
 
 .region.top.left .module.MMM-Worldclock .world {
   width: 50%;
   box-sizing: border-box;
-  padding: 2px 2px;
+  padding: 4px 6px;
 }
 
 .region.top.left .module.MMM-Worldclock .zone {
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
   color: var(--text-faint);
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .region.top.left .module.MMM-Worldclock .main,
 .region.top.left .module.MMM-Worldclock .time {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--accent);
-  line-height: 1.1;
+  line-height: 1.2;
   font-weight: 500;
 }
 
 .region.top.left .module.MMM-Worldclock .title,
 .region.top.left .module.MMM-Worldclock .city {
   color: var(--text-faint);
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
 }
 
 .region.top.left .module.MMM-Worldclock .gap {
@@ -209,56 +202,48 @@ body {
 }
 
 .region.top.left .module.MMM-Worldclock img {
-  width: 16px;
+  width: 18px;
   height: auto;
 }
 
-/* WiFi — right half, same height as world clock */
+/* ── WiFi QR — its own box ────────────────────────────────── */
 .region.top.left .module.MMM-WiFiPassword {
-  display: inline-block;
-  width: 118px;
-  height: var(--combo-height);
-  vertical-align: top;
-  margin: 0 0 10px -4px !important;
-  padding: 6px 8px;
+  width: var(--card-width);
   box-sizing: border-box;
+  margin-bottom: 10px !important;
+  padding: 14px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-left: none;
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: var(--radius);
   box-shadow: var(--card-shadow);
   opacity: 1;
   transform: none;
   text-align: center;
-  overflow: hidden;
 }
 
 .region.top.left .module.MMM-WiFiPassword .header {
   display: none !important;
 }
 
-.region.top.left .module.MMM-WiFiPassword .module-content,
-.region.top.left .module.MMM-WiFiPassword .layout-vertical,
-.region.top.left .module.MMM-WiFiPassword .layout-horizontal {
+.region.top.left .module.MMM-WiFiPassword .module-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  height: 100%;
+  gap: 8px;
 }
 
 .region.top.left .module.MMM-WiFiPassword img,
 .region.top.left .module.MMM-WiFiPassword canvas {
-  width: 72px !important;
-  height: 72px !important;
+  display: block;
+  margin: 0 auto;
 }
 
 .region.top.left .module.MMM-WiFiPassword .network,
 .region.top.left .module.MMM-WiFiPassword .password,
 .region.top.left .module.MMM-WiFiPassword span {
-  font-size: 0.62rem;
-  line-height: 1.15;
+  font-size: 0.72rem;
+  line-height: 1.25;
   color: var(--text-dim);
   word-break: break-word;
 }
