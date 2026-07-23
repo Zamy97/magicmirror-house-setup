@@ -119,11 +119,13 @@ New MagicMirror versions load custom CSS from `config/custom.css` ([docs](https:
 cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
 ```
 
-Edit lat / lon / timezone if needed:
+Edit lat / lon / timezone if needed (prayer + weather modules in `config.js`):
 
 ```bash
 nano ~/MagicMirror/config/config.js
 ```
+
+Also update that house’s `LOCATION.md` in this repo so adhkar cron stays documented.
 
 ---
 
@@ -152,7 +154,29 @@ Useful commands:
 pm2 status
 pm2 logs magicmirror
 pm2 restart magicmirror
+# on some Pis the process is named mm:
+pm2 restart mm
+# or: pm2 restart all
 ```
+
+---
+
+## Step 5 — Adhkar audio (location + cron)
+
+Full guide: **[ADHKAR-AUDIO.md](ADHKAR-AUDIO.md)**  
+Per-house copy-paste: `houses/HOUSE-FOLDER/LOCATION.md`
+
+```bash
+sudo apt-get install -y mpv
+cd ~/MagicMirror/modules/MMM-DailyDua
+git pull
+# Use the lat/lon from that house's LOCATION.md / config.js
+bash scripts/install-cron.sh --lat YOUR_LAT --lon YOUR_LON --morning 7:15 --offset 40
+```
+
+- `--lat` / `--lon` — house location (same as prayer times)
+- `--morning` — morning play time (e.g. `7:15`)
+- `--offset` — minutes before sunset for evening adhkar (default `40`)
 
 ---
 
@@ -164,20 +188,8 @@ git pull
 
 cp houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
 cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
-pm2 restart magicmirror
+pm2 restart all
+
+cd ~/MagicMirror/modules/MMM-DailyDua && git pull
+# If lat/lon or morning time changed, re-run install-cron.sh (see LOCATION.md)
 ```
-
----
-
-## Adhkar audio (cron)
-
-After cloning/updating `MMM-DailyDua`, install mpv and cron for the house lat/lon:
-
-```bash
-sudo apt-get install -y mpv
-cd ~/MagicMirror/modules/MMM-DailyDua
-git pull
-bash scripts/install-cron.sh --lat 42.4710579 --lon -83.0133362 --morning 7:15 --offset 40
-```
-
-Morning plays at the time you pass. Evening plays once ~40 minutes before sunset for that location.

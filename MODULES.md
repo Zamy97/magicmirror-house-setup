@@ -23,6 +23,14 @@ git clone https://github.com/Zamy97/MMM-DailyDua.git
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
 ```
 
+**Adhkar audio (after DailyDua is installed):** see [ADHKAR-AUDIO.md](ADHKAR-AUDIO.md) and each house’s `LOCATION.md` for lat/lon + cron.
+
+```bash
+sudo apt-get install -y mpv
+cd ~/MagicMirror/modules/MMM-DailyDua
+bash scripts/install-cron.sh --lat YOUR_LAT --lon YOUR_LON --morning 7:15 --offset 40
+```
+
 ### Third-party modules
 
 ```bash
