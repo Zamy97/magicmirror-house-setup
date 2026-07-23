@@ -166,3 +166,18 @@ cp houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
 cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
 pm2 restart magicmirror
 ```
+
+---
+
+## Adhkar audio (cron)
+
+After cloning/updating `MMM-DailyDua`, install mpv and cron for the house lat/lon:
+
+```bash
+sudo apt-get install -y mpv
+cd ~/MagicMirror/modules/MMM-DailyDua
+git pull
+bash scripts/install-cron.sh --lat 42.4710579 --lon -83.0133362 --morning 7:15 --offset 40
+```
+
+Morning plays at the time you pass. Evening plays once ~40 minutes before sunset for that location.
