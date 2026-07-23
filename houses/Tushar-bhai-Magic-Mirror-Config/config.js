@@ -81,6 +81,11 @@ let config = {
 				showTranslation: true,
 				showReference: true,
 				showRepeat: true,
+				playAudio: true,
+				morningPlayTime: "07:15",
+				eveningMinutesBeforeSunset: 40,
+				lat: 42.4710579,
+				lon: -83.0133362,
 			},
 		},
 		{
