@@ -252,10 +252,10 @@ body {
   color: var(--accent) !important;
 }
 
-/* ── Current weather — BIG, stays right ──────────────────── */
+/* ── Current weather — wide, stays right ─────────────────── */
 .MMM-OpenmapWeather {
-  width: 300px;
-  padding: 0 8px;
+  width: 520px;
+  padding: 0 4px 6px;
   text-align: right;
   background: none;
   border: none;
@@ -265,51 +265,72 @@ body {
 .MMM-OpenmapWeather .module-header,
 .MMM-OpenmapWeather header {
   color: var(--accent-2);
-  font-size: 1.1rem !important;
-  letter-spacing: 0.08em;
+  font-size: 1rem !important;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-align: right;
+  white-space: nowrap;
 }
 
-/* Main temperature */
-.MMM-OpenmapWeather .bright.large,
-.MMM-OpenmapWeather .large.bright,
-.MMM-OpenmapWeather .temperature,
-.MMM-OpenmapWeather .temp {
+/* Icon and temperature share the full width of the block */
+.MMM-OpenmapWeather .light {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 4px 0 12px;
+}
+
+.MMM-OpenmapWeather .currentWeatherIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 1 !important;
+  font-size: 1rem !important;
+}
+
+.MMM-OpenmapWeather .currentWeatherIcon,
+.MMM-OpenmapWeather .currentWeatherIconWrapper img,
+.MMM-OpenmapWeather img {
+  width: 132px !important;
+  height: 132px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
+}
+
+.MMM-OpenmapWeather .light > .bright {
   color: var(--accent) !important;
-  font-size: 4.5rem !important;
+  font-size: 4.4rem !important;
   font-weight: 300 !important;
-  line-height: 1.05 !important;
+  line-height: 1 !important;
+  margin-left: auto;
 }
 
-/* Feels like, wind, sunrise — bigger but right-aligned */
+/* Wind, sunset, feels like — own rows, not stacked on the sun */
 .MMM-OpenmapWeather .normal,
 .MMM-OpenmapWeather .medium,
-.MMM-OpenmapWeather .small,
-.MMM-OpenmapWeather .feelslike,
-.MMM-OpenmapWeather .feels-like,
-.MMM-OpenmapWeather .wi,
-.MMM-OpenmapWeather span {
-  font-size: 1.35rem !important;
+.MMM-OpenmapWeather .small {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.25rem !important;
   color: var(--text-dim) !important;
-  line-height: 1.45 !important;
+  line-height: 1.4 !important;
+  white-space: nowrap;
 }
 
-.MMM-OpenmapWeather .bright:not(.large) {
-  color: var(--accent) !important;
+.MMM-OpenmapWeather .wi {
   font-size: 1.35rem !important;
-}
-
-.MMM-OpenmapWeather img {
-  width: 80px !important;
-  height: 80px !important;
-  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
+  line-height: 1 !important;
+  color: var(--text-dim) !important;
 }
 
 /* ── Weather forecast — bigger, stays right ─────────────── */
 .MMM-OpenWeatherMapForecast {
-  width: 300px;
+  width: 520px;
   padding: 4px 8px;
   text-align: right;
   background: none;
