@@ -328,10 +328,10 @@ body {
   color: var(--text-dim) !important;
 }
 
-/* ── Weather forecast — bigger, stays right ─────────────── */
+/* ── Weather forecast — hours on one row, days in a grid ── */
 .MMM-OpenWeatherMapForecast {
   width: 520px;
-  padding: 4px 8px;
+  padding: 4px 0 0;
   text-align: right;
   background: none;
   border: none;
@@ -341,71 +341,86 @@ body {
 .MMM-OpenWeatherMapForecast .module-header,
 .MMM-OpenWeatherMapForecast header {
   color: var(--accent-2);
-  font-size: 1.1rem !important;
+  font-size: 1rem !important;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin: 8px 0 6px;
   text-align: right;
 }
 
-.MMM-OpenWeatherMapForecast .module-content,
-.MMM-OpenWeatherMapForecast .wrapper,
-.MMM-OpenWeatherMapForecast .forecast-container {
-  text-align: right !important;
-  justify-content: flex-end !important;
-}
-
-.MMM-OpenWeatherMapForecast .forecast,
-.MMM-OpenWeatherMapForecast .forecast-item,
-.MMM-OpenWeatherMapForecast .daily,
-.MMM-OpenWeatherMapForecast .hourly {
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 8px;
-  padding: 4px 6px;
-  background: none;
+.MMM-OpenWeatherMapForecast .wrapper.tiled .forecast-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  width: 100%;
   border: none;
-  min-width: unset;
-  text-align: center;
 }
 
-.MMM-OpenWeatherMapForecast .forecast-day,
-.MMM-OpenWeatherMapForecast .day,
-.MMM-OpenWeatherMapForecast .date,
-.MMM-OpenWeatherMapForecast .time {
+.MMM-OpenWeatherMapForecast .wrapper.tiled .forecast-container .forecast-item {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 6px 2px 8px !important;
+  min-width: 0 !important;
+  width: auto !important;
+  border: none !important;
+  text-align: center !important;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-item.hourly {
+  flex: 0 0 50% !important;
+  max-width: 50%;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-item.daily {
+  flex: 0 0 33.33% !important;
+  max-width: 33.33%;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-item .time,
+.MMM-OpenWeatherMapForecast .forecast-item .day-name {
   color: var(--text-dim) !important;
-  font-size: 1.1rem !important;
-  text-transform: uppercase;
+  font-size: 0.85rem !important;
   letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2 !important;
 }
 
-.MMM-OpenWeatherMapForecast .forecast-temp,
-.MMM-OpenWeatherMapForecast .max-temp,
-.MMM-OpenWeatherMapForecast .temperature,
-.MMM-OpenWeatherMapForecast .bright {
-  color: var(--accent) !important;
-  font-size: 1.35rem !important;
+.MMM-OpenWeatherMapForecast .forecast-item .forecast-icon,
+.MMM-OpenWeatherMapForecast .forecast-item img {
+  width: 40px !important;
+  height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+  object-fit: contain;
+}
+
+.MMM-OpenWeatherMapForecast .forecast-item .temperature,
+.MMM-OpenWeatherMapForecast .forecast-item .temperature-container,
+.MMM-OpenWeatherMapForecast .forecast-item .high-temperature,
+.MMM-OpenWeatherMapForecast .forecast-item .low-temperature,
+.MMM-OpenWeatherMapForecast .forecast-item .temperature-separator {
+  font-size: 0.92rem !important;
   font-weight: 500 !important;
+  line-height: 1.2 !important;
+  color: var(--accent) !important;
 }
 
-.MMM-OpenWeatherMapForecast .min-temp {
+.MMM-OpenWeatherMapForecast .forecast-item .low-temperature,
+.MMM-OpenWeatherMapForecast .forecast-item .temperature-separator {
   color: var(--text-faint) !important;
-  font-size: 1.15rem !important;
 }
 
-.MMM-OpenWeatherMapForecast .dimmed,
-.MMM-OpenWeatherMapForecast .normal,
-.MMM-OpenWeatherMapForecast .small,
-.MMM-OpenWeatherMapForecast span {
-  font-size: 1.1rem !important;
-  color: var(--text-dim) !important;
-}
-
-.MMM-OpenWeatherMapForecast .wi,
-.MMM-OpenWeatherMapForecast img {
-  font-size: 1.8rem !important;
-  width: 44px !important;
-  height: 44px !important;
+.MMM-OpenWeatherMapForecast .forecast-item .temperature-container {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 4px;
+  white-space: normal;
 }
 
 /* ── Islamic date (bottom right) ──────────────────────────── */
