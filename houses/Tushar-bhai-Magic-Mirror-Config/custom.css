@@ -506,11 +506,24 @@ body {
 
 .MMM-DailyHadith .hadith-translation,
 .MMM-DailyHadith .hadith-bangla {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.45;
-  max-width: 880px;
+  max-width: none;
+  width: 100%;
   margin: 0 auto 4px;
   color: var(--text);
+  white-space: normal;
+  overflow: visible;
+  max-height: none;
+  text-overflow: clip;
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
+.MMM-DailyHadith .hadith-translation.hadith-long,
+.MMM-DailyHadith .hadith-bangla.hadith-long {
+  font-size: 0.84rem;
+  line-height: 1.4;
 }
 
 .MMM-DailyHadith .hadith-bangla {
