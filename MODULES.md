@@ -21,6 +21,8 @@ cd MMM-LocalPrayerTime && npm install && cd ..
 git clone https://github.com/Zamy97/MMM-DailyDua.git
 
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
+
+git clone https://github.com/Zamy97/MMM-QuranAyah.git
 ```
 
 **Adhkar audio (after DailyDua is installed):** see [ADHKAR-AUDIO.md](ADHKAR-AUDIO.md) and each house’s `LOCATION.md` for lat/lon + cron.
@@ -52,9 +54,6 @@ git clone https://github.com/MarcLandis/MMM-OpenWeatherMapForecast.git
 # Prayer times via API (aladhan) + adhan audio
 git clone https://github.com/slametps/MMM-PrayerTime.git
 
-# Random Quran ayah
-git clone https://github.com/slametps/MMM-RandomQuranAyah.git
-
 # Wi‑Fi password / QR
 git clone https://github.com/TeraTech/MMM-WiFiPassword.git
 
@@ -75,7 +74,7 @@ git clone https://github.com/ulrichwisser/MMM-Worldclock.git
 | `MMM-OpenmapWeather` | https://github.com/sathyarajv/MMM-OpenmapWeather |
 | `MMM-OpenWeatherMapForecast` | https://github.com/MarcLandis/MMM-OpenWeatherMapForecast |
 | `MMM-PrayerTime` | https://github.com/slametps/MMM-PrayerTime |
-| `MMM-RandomQuranAyah` | https://github.com/slametps/MMM-RandomQuranAyah |
+| `MMM-QuranAyah` | https://github.com/Zamy97/MMM-QuranAyah |
 | `MMM-WiFiPassword` | https://github.com/TeraTech/MMM-WiFiPassword |
 | `MMM-Worldclock` | https://github.com/ulrichwisser/MMM-Worldclock |
 | `default` | Built into MagicMirror — do not clone |

@@ -102,7 +102,7 @@ let config = {
 			},
 		},
 		{
-			module: "MMM-RandomQuranAyah",
+			module: "MMM-QuranAyah",
 			position: "bottom_bar",
 			config: {
 				apiVersion: "1.0",

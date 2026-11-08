@@ -560,22 +560,24 @@ body {
 }
 
 /* ── Quran ayah — compact footer ──────────────────────────── */
-.MMM-RandomQuranAyah {
+.MMM-QuranAyah {
   padding: 4px 16px 2px;
   border-top: 1px solid rgba(118, 215, 196, 0.15);
   margin-top: 2px;
 }
 
-.MMM-RandomQuranAyah .txt-arabic {
-  font-size: 1.2rem;
-  line-height: 1.55;
+.MMM-QuranAyah .txt-arabic {
+  font-family: "Amiri Quran", "Noto Naskh Arabic", "Scheherazade New", serif;
+  font-size: 1.35rem;
+  line-height: 1.7;
   color: var(--purple);
   direction: rtl;
+  unicode-bidi: isolate;
   text-align: center;
   text-shadow: 0 0 16px rgba(232, 180, 255, 0.3);
 }
 
-.MMM-RandomQuranAyah .txt-translation {
+.MMM-QuranAyah .txt-translation {
   font-size: 0.88rem;
   line-height: 1.35;
   color: var(--mint);
