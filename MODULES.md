@@ -82,7 +82,7 @@ git clone https://github.com/ulrichwisser/MMM-Worldclock.git
 
 ## Typical minimum set
 
-Prayer + dua + hadith (matches most house configs in this repo):
+Prayer + dua + hadith + ayah (matches most house configs in this repo):
 
 ```bash
 cd ~/MagicMirror/modules
@@ -90,6 +90,7 @@ git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
 cd MMM-LocalPrayerTime && npm install && cd ..
 git clone https://github.com/Zamy97/MMM-DailyDua.git
 git clone https://github.com/Zamy97/MMM-DailyHadith.git
+git clone https://github.com/Zamy97/MMM-QuranAyah.git
 ```
 
 Only add the other clones when that house’s `config.js` uses them.

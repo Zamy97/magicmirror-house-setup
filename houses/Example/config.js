@@ -25,8 +25,10 @@ let config = {
 			module: "alert",
 		},
 		{
+			// Disabled: flaky Pi Wi‑Fi makes git fetch to GitHub spam the error log.
 			module: "updatenotification",
 			position: "top_bar",
+			disabled: true,
 		},
 		{
 			module: "clock",
@@ -48,15 +50,9 @@ let config = {
 				hideFog: true,
 				hideSun: true,
 				hideMoon: true,
-				effects: [
-					{
-						month: "",
-						day: "",
-						year: "",
-						images: [],
-						direction: "down",
-					},
-				],
+				particleCount: 20,
+				// Empty = weather effects only; avoids holiday scrape (timeanddate 403).
+				effects: [],
 			},
 		},
 		{
@@ -105,11 +101,10 @@ let config = {
 			module: "MMM-QuranAyah",
 			position: "bottom_bar",
 			config: {
-				apiVersion: "1.0",
 				showArabic: true,
 				showTranslation: true,
 				surahArabicName: false,
-				translationLang: "en.yusufali",
+				rotationMode: "random",
 				updateInterval: 300000,
 			},
 		},

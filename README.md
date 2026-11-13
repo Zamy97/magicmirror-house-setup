@@ -1,195 +1,262 @@
 # MagicMirror house setup
 
-Simple step-by-step to set up MagicMirror on a Raspberry Pi. House `config.js` and `custom.css` files live under `houses/`. Module install links are in [MODULES.md](MODULES.md).
+Playbook for house Raspberry Pis. Configs live under `houses/`. Modules: [MODULES.md](MODULES.md).
 
-Official MagicMirror install docs: https://docs.magicmirror.builders/getting-started/installation.html
+**Repo:** https://github.com/Zamy97/magicmirror-house-setup  
+
+**Official docs (source of truth for MM itself):**
+- [Installation](https://docs.magicmirror.builders/getting-started/installation.html)
+- [Requirements](https://docs.magicmirror.builders/getting-started/requirements.html) — Pi OS **Desktop** (not Lite)
+- [Autostart](https://docs.magicmirror.builders/configuration/autostart.html) — **user systemd** + Electron
+- [Raspberry / Trixie](https://docs.magicmirror.builders/configuration/raspberry.html)
+
+**Stable method we use:** Raspberry Pi OS Desktop (Trixie) → MagicMirror Electron (`node --run start`) → user systemd autostart → house config from this repo. No Chromium kiosk, no `serveronly` unless we explicitly choose it later.
 
 ---
 
-## Step 1 — Install MagicMirror
+## Soft wipe (start clean, keep the OS)
 
-### 1. Download and install a required Node.js version
+Run on the Pi when an old install is messy:
 
-See the official documentation:
+```bash
+# Stop old process managers / browsers
+pm2 delete all 2>/dev/null || true
+pm2 unstartup systemd -u pi --hp /home/pi 2>/dev/null || true
+systemctl --user disable --now magicmirror.service 2>/dev/null || true
+pkill chromium 2>/dev/null || true
+pkill -f "MagicMirror" 2>/dev/null || true
 
-- [Linux based distributions](https://nodejs.org/en/download)
-- [Others](https://nodejs.org/en/download)
+# Remove kiosk leftovers
+rm -f ~/bin/start-mirror-kiosk.sh
+sed -i '/start-mirror-kiosk/d' ~/.config/labwc/autostart 2>/dev/null || true
 
-On Raspberry Pi OS / Debian, a common approach:
+# Remove MagicMirror tree
+rm -rf ~/MagicMirror
+```
+
+Then follow **Fresh install** below.
+
+---
+
+## Fresh install
+
+### 0. Pi desktop basics
+
+```bash
+sudo raspi-config
+```
+
+- **System Options → Boot / Auto Login → Desktop autologin**
+- **Display Options → Screen Blanking → No**
+
+### 1. Node.js + git
 
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt-get install -y nodejs git
 node -v
 npm -v
 ```
 
-(Use a current LTS major version that MagicMirror supports — check the [installation docs](https://docs.magicmirror.builders/getting-started/installation.html) if unsure.)
-
-### 2. Make sure `git` is installed
-
-```bash
-git --version
-```
-
-If that fails:
-
-```bash
-sudo apt-get install -y git
-```
-
-### 3. Clone MagicMirror
+### 2. Clone and install MagicMirror
 
 ```bash
 cd ~
 git clone https://github.com/MagicMirrorOrg/MagicMirror.git
-```
-
-### 4. Enter the repository
-
-```bash
 cd ~/MagicMirror
-```
-
-### 5. Install the application
-
-```bash
 node --run install-mm
 ```
 
-This can take a long time on a Pi with little terminal output. Do not interrupt it.
+This can take a long time with little output — do not interrupt.
 
-### 6. Make a copy of the config sample file
+### 3. Network hardening (every house Pi)
 
-```bash
-cp config/config.js.sample config/config.js
-```
-
-### 7. Start MagicMirror (optional test)
+Stops `ENETUNREACH` on broken IPv6 and flaky Wi‑Fi sleep:
 
 ```bash
-node --run start
+# Prefer IPv4
+grep -q 'precedence :ffff:0:0/96' /etc/gai.conf 2>/dev/null || \
+  echo 'precedence :ffff:0:0/96  100' | sudo tee -a /etc/gai.conf
+
+# Disable IPv6
+sudo tee /etc/sysctl.d/99-disable-ipv6.conf >/dev/null <<'EOF'
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOF
+sudo sysctl --system
+
+# Wi-Fi powersave off (Pi OS Trixie / NetworkManager)
+sudo tee /etc/NetworkManager/conf.d/powersave.conf >/dev/null <<'EOF'
+[connection]
+wifi.powersave=2
+EOF
+sudo systemctl restart NetworkManager
 ```
 
-Stop with `Ctrl+C` when you are done testing.
+Or: `bash ~/magicmirror-house-setup/scripts/fix-ipv4-on-pi.sh` after cloning this repo.
 
----
-
-## Step 2 — Install modules
-
-```bash
-cd ~/MagicMirror/modules
-```
-
-Clone the modules you need. Full list with install commands: **[MODULES.md](MODULES.md)**.
-
-Example (our common set):
-
-```bash
-git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
-cd MMM-LocalPrayerTime && npm install && cd ..
-
-git clone https://github.com/Zamy97/MMM-DailyDua.git
-git clone https://github.com/Zamy97/MMM-DailyHadith.git
-```
-
-Add any other modules from [MODULES.md](MODULES.md) that your house `config.js` uses.
-
----
-
-## Step 3 — Config and CSS
-
-Clone this setup repo (or copy files another way):
+### 4. Clone this playbook + apply a house
 
 ```bash
 cd ~
 git clone https://github.com/Zamy97/magicmirror-house-setup.git
+# later updates:
+# cd ~/magicmirror-house-setup && git pull
+
+HOUSE=Example   # or: Tushar-bhai-Magic-Mirror-Config
+cp ~/magicmirror-house-setup/houses/$HOUSE/config.js ~/MagicMirror/config/config.js
+cp ~/magicmirror-house-setup/houses/$HOUSE/custom.css ~/MagicMirror/config/custom.css
 ```
 
-Copy the house folder you want into MagicMirror (replace `HOUSE-FOLDER` with the folder name under `houses/`):
-
-```bash
-cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
-cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
-```
-
-New MagicMirror versions load custom CSS from `config/custom.css` ([docs](https://docs.magicmirror.builders/configuration/customcss.html)). If the Pi runs an **older** MagicMirror that still uses `css/custom.css`, copy it there too:
-
-```bash
-cp ~/magicmirror-house-setup/houses/HOUSE-FOLDER/custom.css ~/MagicMirror/css/custom.css
-```
-
-Edit lat / lon / timezone if needed (prayer + weather modules in `config.js`):
+Edit secrets / lat-lon / Wi‑Fi / OpenWeather keys on the Pi only (do not commit real keys):
 
 ```bash
 nano ~/MagicMirror/config/config.js
 ```
 
-Also update that house’s `LOCATION.md` in this repo so adhkar cron stays documented.
-
----
-
-## Step 4 — Configure PM2
-
-So MagicMirror starts on boot and restarts if it crashes:
+### 5. Install modules
 
 ```bash
-sudo npm install -g pm2
+cd ~/MagicMirror/modules
+```
 
+Follow **[MODULES.md](MODULES.md)** for everything that house’s `config.js` references. Typical set:
+
+```bash
+git clone https://github.com/Zamy97/MMM-LocalPrayerTime.git
+cd MMM-LocalPrayerTime && npm install && cd ..
+git clone https://github.com/Zamy97/MMM-DailyDua.git
+git clone https://github.com/Zamy97/MMM-DailyHadith.git
+git clone https://github.com/Zamy97/MMM-QuranAyah.git
+
+git clone https://github.com/KirAsh4/calendar_monthly.git
+git clone https://github.com/eulhaque/currentislamicdate.git
+git clone https://github.com/scottcl88/MMM-DynamicWeather.git
+git clone https://github.com/sathyarajv/MMM-OpenmapWeather.git
+git clone https://github.com/MarcLandis/MMM-OpenWeatherMapForecast.git
+git clone https://github.com/TeraTech/MMM-WiFiPassword.git
+git clone https://github.com/ulrichwisser/MMM-Worldclock.git
+```
+
+**DynamicWeather holiday scrape:** if the module still 403s, either keep `effects: []` in config, or patch once:
+
+```bash
+python3 - <<'PY'
+from pathlib import Path
+p = Path.home() / "MagicMirror/modules/MMM-DynamicWeather/MMM-DynamicWeather.js"
+t = p.read_text()
+old = "_this_1.allHolidays.push(effect.holiday);"
+new = "if (effect.holiday) { _this_1.allHolidays.push(effect.holiday); }"
+if old in t:
+    p.write_text(t.replace(old, new, 1))
+    print("patched")
+else:
+    print("already patched or different version")
+PY
+```
+
+### 6. Test Electron once
+
+```bash
 cd ~/MagicMirror
-pm2 start "node --run start" --name magicmirror
-pm2 save
-pm2 startup
+NODE_OPTIONS='--dns-result-order=ipv4first' node --run start
 ```
 
-Run the `sudo` command that `pm2 startup` prints, then:
+You should see the mirror window. Stop with `Ctrl+C`.
+
+### 7. Autostart (official: user systemd)
+
+Per [Autostart docs](https://docs.magicmirror.builders/configuration/autostart.html) — starts after desktop login so Electron has Wayland:
 
 ```bash
-pm2 save
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/magicmirror.service
 ```
 
-Useful commands:
+```ini
+[Unit]
+Description=MagicMirror
+After=graphical-session.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=15
+WorkingDirectory=%h/MagicMirror
+Environment=NODE_OPTIONS=--dns-result-order=ipv4first
+ExecStart=/usr/bin/node --run start
+
+[Install]
+WantedBy=default.target
+```
 
 ```bash
-pm2 status
-pm2 logs magicmirror
-pm2 restart magicmirror
-# on some Pis the process is named mm:
-pm2 restart mm
-# or: pm2 restart all
+systemctl --user daemon-reload
+systemctl --user enable --now magicmirror.service
+systemctl --user status magicmirror.service
 ```
 
----
+Useful:
 
-## Step 5 — Adhkar audio (location + cron)
+```bash
+systemctl --user restart magicmirror.service
+journalctl --user -u magicmirror.service -n 50 --no-pager
+```
 
-Full guide: **[ADHKAR-AUDIO.md](ADHKAR-AUDIO.md)**  
-Per-house copy-paste: `houses/HOUSE-FOLDER/LOCATION.md`
+Enable lingering so user services behave predictably after reboot (optional but recommended):
+
+```bash
+sudo loginctl enable-linger pi
+```
+
+### 8. Display lock (portrait TV example)
+
+If the house uses HDMI-A-2 at 1080p rotated 270°:
+
+```bash
+mkdir -p ~/.config/labwc
+nano ~/.config/labwc/autostart
+```
+
+```bash
+wlr-randr --output HDMI-A-2 --mode 1920x1080 --transform 270
+```
+
+Do **not** put Chromium or a second MagicMirror start here.
+
+### 9. Adhkar audio (optional)
+
+See [ADHKAR-AUDIO.md](ADHKAR-AUDIO.md) and `houses/HOUSE-FOLDER/LOCATION.md`.
 
 ```bash
 sudo apt-get install -y mpv
 cd ~/MagicMirror/modules/MMM-DailyDua
-git pull
-# Use the lat/lon from that house's LOCATION.md / config.js
 bash scripts/install-cron.sh --lat YOUR_LAT --lon YOUR_LON --morning 7:15 --offset 40
 ```
-
-- `--lat` / `--lon` — house location (same as prayer times)
-- `--morning` — morning play time (e.g. `7:15`)
-- `--offset` — minutes before sunset for evening adhkar (default `40`)
 
 ---
 
 ## Updating later
 
 ```bash
-cd ~/magicmirror-house-setup
-git pull
+cd ~/magicmirror-house-setup && git pull
+HOUSE=Example   # or the house folder name
+cp houses/$HOUSE/config.js ~/MagicMirror/config/config.js
+cp houses/$HOUSE/custom.css ~/MagicMirror/config/custom.css
+systemctl --user restart magicmirror.service
 
-cp houses/HOUSE-FOLDER/config.js ~/MagicMirror/config/config.js
-cp houses/HOUSE-FOLDER/custom.css ~/MagicMirror/config/custom.css
-pm2 restart all
-
+cd ~/MagicMirror/modules/MMM-QuranAyah && git pull
 cd ~/MagicMirror/modules/MMM-DailyDua && git pull
-# If lat/lon or morning time changed, re-run install-cron.sh (see LOCATION.md)
+cd ~/MagicMirror/modules/MMM-DailyHadith && git pull
+cd ~/MagicMirror/modules/MMM-LocalPrayerTime && git pull
 ```
+
+---
+
+## Houses
+
+| Folder | Notes |
+|--------|--------|
+| `Example` | Template |
+| `Tushar-bhai-Magic-Mirror-Config` | Tushar bhai’s house |
